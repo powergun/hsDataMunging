@@ -1,0 +1,5 @@
+ 9:39  up 1 day, 21 mins, 3 users, load averages: 2.35 2.50 2.42
+USER     TTY      FROM              LOGIN@  IDLE WHAT
+weining  console  -                Fri09   24:20 -
+weining  s001     -                Fri10   23:35 -bash
+weining  s002     -                Fri10       - w
