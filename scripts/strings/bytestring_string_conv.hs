@@ -1,6 +1,11 @@
 #!/usr/bin/env stack runghc
 
 -- motivation: How to convert string to bytestring (and backward)
+-- \\\\\\\\\\\\\\\\\\\\\\\\ UPDATE \\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+-- see bytestring_cook.hs
+-- enable OverloadedStrings extension, then I can create bytestring
+-- using quoted string directly
+
 {-
 see:
 https://stackoverflow.com/questions/3232074/what-is-the-best-way-to-convert-string-to-bytestring
