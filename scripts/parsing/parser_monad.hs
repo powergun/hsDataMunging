@@ -16,6 +16,18 @@ atom = AtomicParser $ \s ->
           [] -> []
           (x:xs) -> [(x, xs)]
 
+atom2 :: AtomicParser String
+atom2 = AtomicParser $ \s ->
+          case s of
+            (x:y:xs) -> [([x, y], xs)]
+            _ -> []
+
+atom3 :: AtomicParser String
+atom3 = AtomicParser $ \s ->
+          case s of
+            (x:y:z:xs) -> [([x, y, z], xs)]
+            _ -> []
+
 instance Functor AtomicParser where
   fmap f p = AtomicParser $ \s ->
     case (runParser p s) of
@@ -101,10 +113,36 @@ demoParserMonad = do
   print $ runParser three "thereisnospoon"
   print $ runParser three "th"
 
+-- P181
+-- another natural way of combining parsers is to apply one 
+-- parser to the input string, and if this fails to then apply 
+-- another to the same input instead
+-- P182
+-- empty is the parser that always fails regardless of the input
+-- and <|> is a choice operator that returns the result of the 
+-- first parser if it succeeds on the input, and applies the 
+-- second parser to the same input otherwise
+instance Alternative AtomicParser where
+  empty = AtomicParser (\_ -> [])
+  p <|> q = 
+    let newParserFunc s = 
+          case (runParser p s) of
+            [] -> runParser q s
+            [(v, out)] -> [(v, out)]
+    in AtomicParser newParserFunc
+
+demoParserAsAlternative :: IO ()
+demoParserAsAlternative = do
+  print $ runParser (empty :: AtomicParser Char) "idnoclip"
+  print $ runParser (empty <|> atom) "idn"
+  print $ runParser (empty <|> atom3 <|> atom2) "id"
+  print $ runParser (empty <|> atom3 <|> atom2) "idnoclip"
+
 main :: IO ()
 main = do
   demoAtomicParser
   demoParserAsFunctor
   demoParserAsApplicative
   demoParserMonad
+  demoParserAsAlternative
   
