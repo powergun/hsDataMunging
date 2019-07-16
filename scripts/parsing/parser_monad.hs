@@ -99,6 +99,7 @@ demoParserMonad = do
         z <- atom
         return (x, z)
   print $ runParser three "thereisnospoon"
+  print $ runParser three "th"
 
 main :: IO ()
 main = do
