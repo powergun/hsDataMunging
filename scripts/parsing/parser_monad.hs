@@ -152,33 +152,56 @@ sat p = do
 -- MY NOTES:
 -- THIS IS VERY IMPORTANT! Business logic is born from these 
 -- derived primitives!
+ident :: AtomicParser String
+ident = do 
+  x <- lower
+  xs <- many alphanum
+  return (x:xs)
+nat :: AtomicParser Int
+nat = do 
+  xs <- some digit
+  return (read xs) -- awesome!!!
+int :: AtomicParser Int
+int = do char '-'
+         n <- nat
+         return (-n)
+      <|> nat
+hexstr :: AtomicParser String
+hexstr = do 
+  string "0x"
+  ns <- many alphanum
+  return ("0x" ++ ns)
+space :: AtomicParser ()
+space = do 
+  many (sat isSpace)
+  return ()
+digit :: AtomicParser Char
+digit = sat isDigit
+lower :: AtomicParser Char
+lower = sat isLower
+upper :: AtomicParser Char
+upper = sat isUpper
+letter :: AtomicParser Char
+letter = sat isAlpha
+alphanum :: AtomicParser Char
+alphanum = sat isAlphaNum
+char :: Char -> AtomicParser Char
+char x = sat (== x)
+
+-- P183
+-- using char we can define a prser string xs for the string
+-- of characters xs, with the string itself returned as 
+-- the result value
+-- note that string only succeeds if the entire target is 
+-- consumed from the input
+string :: String -> AtomicParser String
+string [] = return []
+string (x:xs) = do
+  char x -- trash the result
+  string xs -- recursion
+  return (x:xs)
 demoPredicate :: IO ()
 demoPredicate = do
-  let digit :: AtomicParser Char
-      digit = sat isDigit
-      lower :: AtomicParser Char
-      lower = sat isLower
-      upper :: AtomicParser Char
-      upper = sat isUpper
-      letter :: AtomicParser Char
-      letter = sat isAlpha
-      alphanum :: AtomicParser Char
-      alphanum = sat isAlphaNum
-      char :: Char -> AtomicParser Char
-      char x = sat (== x)
-
-      -- P183
-      -- using char we can define a prser string xs for the string
-      -- of characters xs, with the string itself returned as 
-      -- the result value
-      -- note that string only succeeds if the entire target is 
-      -- consumed from the input
-      string :: String -> AtomicParser String
-      string [] = return []
-      string (x:xs) = do
-        char x -- trash the result
-        string xs -- recursion
-        return (x:xs)
   print $ runParser (char 'X') "Xoiasd"
   print $ runParser (char '_') "0x12"
   print $ runParser lower "IDDQD"
@@ -199,25 +222,6 @@ demoPredicate = do
   print $ runParser (many digit) ":address 1234"
   print $ runParser (some digit) "0123 there is 13 a cow"
 
-  let ident :: AtomicParser String
-      ident = do x <- lower
-                 xs <- many alphanum
-                 return (x:xs)
-      nat :: AtomicParser Int
-      nat = do xs <- some digit
-               return (read xs) -- awesome!!!
-      int :: AtomicParser Int
-      int = do char '-'
-               n <- nat
-               return (-n)
-            <|> nat
-      hexstr :: AtomicParser String
-      hexstr = do string "0x"
-                  ns <- many alphanum
-                  return ("0x" ++ ns)
-      space :: AtomicParser ()
-      space = do many (sat isSpace)
-                 return ()
   print $ runParser ident "const std::string* pStr = nullptr;"
   print $ runParser nat "1234:4567 mov ax, bx"
   print $ runParser int "-1234 "
@@ -229,6 +233,43 @@ demoPredicate = do
 -- the basic tokens in their input string
 -- we define a new primitive that ignores any space before and 
 -- after applying a parser for a token
+token :: AtomicParser a -> AtomicParser a
+token p = do 
+  space
+  v <- p
+  space
+  return v
+identifier :: AtomicParser String
+identifier = token ident
+natural :: AtomicParser Int
+natural = token nat
+integer :: AtomicParser Int
+integer = token int
+symbol :: String -> AtomicParser String
+symbol xs = token (string xs)
+-- P186
+-- for example using these primitives a parser for a non-empty
+-- list of natural numbers that ignores spacing around tokens
+-- can be defined as:
+nats :: AtomicParser [Int]
+nats = do 
+  symbol "["
+  n <- natural
+  ns <- many $ do 
+    symbol "," 
+    natural
+  symbol "]"
+  return (n:ns)
+demoIgnoreSpaceCharacters :: IO ()
+demoIgnoreSpaceCharacters = do
+  -- MY NOTES:
+  -- recall space will drain any continuous space characters
+  print $ runParser nats "  [   1  ,   2  ,    3  ,     4  ]  "
+  print $ runParser nats "[  ]"
+  -- P186 
+  -- note that nats only succeeds if a complete list in precisely
+  -- this format is consumed
+  print $ runParser nats "[1,]"
 
 main :: IO ()
 main = do
@@ -239,3 +280,4 @@ main = do
   demoParserAsAlternative
   
   demoPredicate
+  demoIgnoreSpaceCharacters
