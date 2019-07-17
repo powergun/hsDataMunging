@@ -135,8 +135,100 @@ demoParserAsAlternative :: IO ()
 demoParserAsAlternative = do
   print $ runParser (empty :: AtomicParser Char) "idnoclip"
   print $ runParser (empty <|> atom) "idn"
+  -- atom2 and atom3 discards source string of length less than
+  -- 2 and 3
   print $ runParser (empty <|> atom3 <|> atom2) "id"
   print $ runParser (empty <|> atom3 <|> atom2) "idnoclip"
+
+sat :: (Char -> Bool) -> AtomicParser Char
+sat p = do
+  x <- atom
+  if p x
+  then
+    return x
+  else
+    empty
+
+-- MY NOTES:
+-- THIS IS VERY IMPORTANT! Business logic is born from these 
+-- derived primitives!
+demoPredicate :: IO ()
+demoPredicate = do
+  let digit :: AtomicParser Char
+      digit = sat isDigit
+      lower :: AtomicParser Char
+      lower = sat isLower
+      upper :: AtomicParser Char
+      upper = sat isUpper
+      letter :: AtomicParser Char
+      letter = sat isAlpha
+      alphanum :: AtomicParser Char
+      alphanum = sat isAlphaNum
+      char :: Char -> AtomicParser Char
+      char x = sat (== x)
+
+      -- P183
+      -- using char we can define a prser string xs for the string
+      -- of characters xs, with the string itself returned as 
+      -- the result value
+      -- note that string only succeeds if the entire target is 
+      -- consumed from the input
+      string :: String -> AtomicParser String
+      string [] = return []
+      string (x:xs) = do
+        char x -- trash the result
+        string xs -- recursion
+        return (x:xs)
+  print $ runParser (char 'X') "Xoiasd"
+  print $ runParser (char '_') "0x12"
+  print $ runParser lower "IDDQD"
+  print $ runParser (string "local") "local value=\"iddqd\""
+
+  -- P184
+  -- many p and some p apply a parser p as many times as possible 
+  -- until it fails, with the result values from each successful
+  -- application of p being returned in a list
+  -- the difference between these two repetition primitives is 
+  -- that many permits zero or more applications of p, whereas
+  --      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  -- some requires at least one successful application
+  -- ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  -- the definition of many() and some() are provided in the 
+  -- Alternative class (defined using mutual recursion)
+  print $ runParser (many digit) "01213 'there is a cow 1337'"
+  print $ runParser (many digit) ":address 1234"
+  print $ runParser (some digit) "0123 there is 13 a cow"
+
+  let ident :: AtomicParser String
+      ident = do x <- lower
+                 xs <- many alphanum
+                 return (x:xs)
+      nat :: AtomicParser Int
+      nat = do xs <- some digit
+               return (read xs) -- awesome!!!
+      int :: AtomicParser Int
+      int = do char '-'
+               n <- nat
+               return (-n)
+            <|> nat
+      hexstr :: AtomicParser String
+      hexstr = do string "0x"
+                  ns <- many alphanum
+                  return ("0x" ++ ns)
+      space :: AtomicParser ()
+      space = do many (sat isSpace)
+                 return ()
+  print $ runParser ident "const std::string* pStr = nullptr;"
+  print $ runParser nat "1234:4567 mov ax, bx"
+  print $ runParser int "-1234 "
+  print $ runParser hexstr "0x3e7"
+  print $ runParser space "    def __init__(self):"
+
+-- P185
+-- most real-life parsers allow spacing to be freely used around 
+-- the basic tokens in their input string
+-- we define a new primitive that ignores any space before and 
+-- after applying a parser for a token
 
 main :: IO ()
 main = do
@@ -146,3 +238,4 @@ main = do
   demoParserMonad
   demoParserAsAlternative
   
+  demoPredicate
