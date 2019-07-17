@@ -3,6 +3,8 @@
 import Control.Applicative
 import Data.Char
 
+-- programming haskell
+
 newtype AtomicParser a = AtomicParser {
   runParser :: String -> [(a, String)]
 }
@@ -271,6 +273,51 @@ demoIgnoreSpaceCharacters = do
   -- this format is consumed
   print $ runParser nats "[1,]"
 
+-- P186
+-- the syntactic structure of a language can be formalised using 
+-- the mathematical notion of a grammar, which is a set of rules 
+-- that describes how strings of the language can be constructed
+-- P188
+-- have a separate rule for each level of priority, with 
+-- addition at the lowest level of priority, mult at the mid
+-- level and parentheses and numbers at the highest level
+expr :: AtomicParser Int
+expr = do {
+  t <- term;
+  do { 
+    symbol "+";
+    e <- expr;
+    return (t + e);
+  } <|> return t;
+}
+term :: AtomicParser Int
+term = do {
+  f <- factor;
+  do {
+    symbol "*";
+    t <- term;
+    return (f * t);
+  } <|> return f;
+}
+factor :: AtomicParser Int
+factor = do {
+  symbol "(";
+  e <- expr;
+  symbol ")";
+  return e;
+} <|> natural
+eval :: String -> Int
+eval xs = 
+  case (runParser expr xs) of
+    [(n, [])] -> n
+    [(_, out)] -> error ("unused input: " ++ out)
+    [] -> error "invalid input"
+demoArithmeticExpressions :: IO ()
+demoArithmeticExpressions = do
+  print $ eval "2 + 1337 * 1 + (1 + 2)"
+  -- print $ eval "xe + we"
+  -- print $ eval "2 + 1as"
+
 main :: IO ()
 main = do
   demoAtomicParser
@@ -281,3 +328,5 @@ main = do
   
   demoPredicate
   demoIgnoreSpaceCharacters
+
+  demoArithmeticExpressions
