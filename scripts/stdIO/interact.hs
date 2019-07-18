@@ -20,4 +20,8 @@ to test (will dump to stdout 4k characters)
 
 import Data.Char (toUpper)
 
-main = interact (map toUpper)
+io :: (String -> String) -> IO ()
+io f = interact f
+
+main = do
+  io (map toUpper)

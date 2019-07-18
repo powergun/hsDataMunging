@@ -14,6 +14,8 @@ passed to this function as its argument, and the resulting string
 is output on the standard output device.
 -}
 -- http://www.cantab.net/users/antoni.diller/haskell/units/unit08.html
+
+io :: (String -> String) -> IO ()
 io f = interact (unlines . f . lines)
 
 main :: IO ()
