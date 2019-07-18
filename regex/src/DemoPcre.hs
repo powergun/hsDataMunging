@@ -1,3 +1,6 @@
+{-# LANGUAGE FlexibleContexts #-}
+-- to implement regexBool function
+
 module DemoPcre
   ( demo
   ) where
@@ -99,6 +102,16 @@ demoMatchLazyByteString = do
   (return (sut =~ L.pack "is|Is" :: L.ByteString)) >>=
     print
 
+-- require FlexibleContexts extension
+-- source
+-- https://wiki.haskell.org/Simple_Unix_tools
+demoQuickMatch :: IO ()
+demoQuickMatch = do
+  print 
+    "//////// demo quick match (return boolean) ///////////////"
+  let regexBool reg line = (line =~ reg :: Bool)
+  print $ regexBool "\\w+" "there is cow"
+
 demo :: IO ()
 demo = do
   demoExplicitReturnType
@@ -108,3 +121,4 @@ demo = do
   demoGetStartAndLength
   demoMatchByteString
   demoMatchLazyByteString
+  demoQuickMatch
