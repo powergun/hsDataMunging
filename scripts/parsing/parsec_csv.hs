@@ -80,7 +80,7 @@ demoParseCSV = do
   -- print $ parseCSV "line\n\nline\n"
 
   content <- readFile "C2ImportCalEventSample.csv"
-  print $ parseCSV content
+  print $ length $ parseCSV content
 
 -- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 -- real world haskell P/426
@@ -103,15 +103,47 @@ demoParseCSV = do
 -- with the end of line character
 -- we can use sepBy to parse cells, since the last cell will not
 -- end with a comma
-csvFile' = endBy line' eol'
+csvFile' = endBy line' eolTry
 line' = sepBy cell' (char ',')
 cell' = many (noneOf ",\n")
-eol' = char '\n'
+-- eol' = do
+--   -- first looks for \n, if it finds it then it will look for
+--   -- \r, consuming it if possible. Since the return type of
+--   -- char '\r' is a Char, the alternative action is to simply
+--   -- return a Char without attempting to parse anything
+--   char '\n'
+--   char '\r' <|> return '\n'
+
+-- real world haskell P/429
+-- lookahead
+-- try takes one function, a parser, and applies it
+-- if the parser doesn't succeed, try behaves as if it hadn't
+-- consumed any input at all
+eolTry =   try (string "\n\r")
+       <|> try (string "\r\n")
+       <|> string "\n"
+       <|> string "\r"
+       <?> "end-of-line"
+-- P/430
+-- Parsec has an <?> operator that is designed for error message
+-- it is similar to <|> in that it first tries the parser on its
+-- left. Instead of trying another parser in the event of a
+-- failure, it presents an error message
+
+-- real world haskell P/428
+-- when writing parsers, it 's often very convenient to be able
+-- to "look ahead" at the data that is coming in
+-- Parsec supports this
+
+parseCSV' :: String -> Either ParseError [[String]]
+parseCSV' input =
+  parse csvFile' "(unknown)" input
 
 demoParseCSV' :: IO ()
 demoParseCSV' = do
   content <- readFile "C2ImportCalEventSample.csv"
-  print $ parse csvFile' "(unknown)" content
+  print $ length $ parseCSV' content
+  print $ parseCSV' "ad\n\r"
 
 main :: IO ()
 main = do
