@@ -33,6 +33,8 @@ quotedCell = do
 quotedChar = do
   noneOf "\""
   <|> try (string "\"\"" >> return '"')
+  -- this try() occur on the left side of a <|>, but on the
+  -- left of one that must be within the implementation of many()
 
 eol =   try (string "\n\r")
     <|> try (string "\r\n")
@@ -44,9 +46,17 @@ parseCSV :: String -> Either ParseError [[String]]
 parseCSV input =
   parse csvFile "(unknown)" input
 
+demoParseCSVFile :: String -> IO ()
+demoParseCSVFile filename = do
+  content <- readFile filename
+  case (parseCSV content) of
+    Right rows ->
+      forM_ rows $ \r -> do
+        putStrLn $ intercalate "|    |" r
+    Left e -> do
+      putStrLn "error parsing input: "
+      print e
+
 main :: IO ()
 main = do
-  content <- readFile "Addresses.csv"
-  let Right rows = parseCSV content
-  forM_ rows $ \r -> do
-    putStrLn $ intercalate "|    |" r
+  demoParseCSVFile "Addresses.csv"
