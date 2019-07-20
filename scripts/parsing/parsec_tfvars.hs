@@ -4,7 +4,7 @@ import           Control.Monad
 import           System.IO
 import           Text.ParserCombinators.Parsec
 
-data Element = Null
+data Element = Empty
              | Comment { comment :: String }
              | Variable { name :: String, value :: String }
              deriving (Eq, Show)
