@@ -62,8 +62,8 @@ parseCSV :: String -> Either ParseError [[String]]
 parseCSV input =
   parse csvFile "(unknown)" input
 
-main :: IO ()
-main = do
+demoParseCSV :: IO ()
+demoParseCSV = do
   -- empty
   -- print $ parseCSV ""
 
@@ -73,5 +73,47 @@ main = do
   -- singleton [["a"]]
   -- print $ parseCSV "a\n"
 
+  -- simple lines
+  -- print $ parseCSV "line\nline\nline\n"
+
+  -- empty line
+  -- print $ parseCSV "line\n\nline\n"
+
   content <- readFile "C2ImportCalEventSample.csv"
   print $ parseCSV content
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+-- real world haskell P/426
+-- simplify the above parsing logics
+
+-- sepBy:
+-- takes two functions as arguments: the first parses some sort
+-- of content, while the second parses a separator.
+-- starts by trying to parse content and then separators, and
+-- alternates back and forth until it can't parse a separator
+-- it returns a list of all the content that it was able to
+-- parse
+
+-- endBy:
+-- similar to sepBy but expects the very last item to be followed
+-- by the separator. That is, it continues parsing until it
+-- can't parse any more content
+
+-- we can use endBy to parse lines, since every line must end
+-- with the end of line character
+-- we can use sepBy to parse cells, since the last cell will not
+-- end with a comma
+csvFile' = endBy line' eol'
+line' = sepBy cell' (char ',')
+cell' = many (noneOf ",\n")
+eol' = char '\n'
+
+demoParseCSV' :: IO ()
+demoParseCSV' = do
+  content <- readFile "C2ImportCalEventSample.csv"
+  print $ parse csvFile' "(unknown)" content
+
+main :: IO ()
+main = do
+  demoParseCSV
+  demoParseCSV'
