@@ -29,7 +29,10 @@ p_char =   oneOf urlBaseChars
        <|> (char '+' >> return ' ')
        <|> p_hex
 
-urlBaseChars = ['a'..'z'] ++ ['A'..'Z'] ++ ['0'..'9'] ++ "$-_.!*'(),"
+urlBaseChars = ['a'..'z']
+            ++ ['A'..'Z']
+            ++ ['0'..'9']
+            ++ "$-_.!*'(),"
 
 p_hex :: CharParser () Char
 p_hex = do
