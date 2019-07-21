@@ -24,6 +24,10 @@ p_pair = do
   value <- optionMaybe (char '=' >> many p_char)
   return (name, value)
 
+  -- P/435
+  -- compact form:
+  -- liftM2 (,) (many1 p_char) (optionMaybe (char '=' >> many p_char))
+
 p_char :: CharParser () Char
 p_char =   oneOf urlBaseChars
        <|> (char '+' >> return ' ')
