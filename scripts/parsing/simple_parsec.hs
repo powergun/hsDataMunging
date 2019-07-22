@@ -77,6 +77,8 @@ demoJavaScriptValue = do
             <* (despace (char ']'))
   
   -- I  can use monadic notation (do notation) instead of *> <* !!
+  -- the *> expression can not retrieve the parser's return 
+  -- value (not in monadic context)
   print $ parse jv "..." "true" 
   print $ parse (despace jv) "..." "  \" there is a cow \"  "
   print $ parse jv "..." "thereis"
