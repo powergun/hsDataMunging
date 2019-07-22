@@ -46,6 +46,43 @@ demoMatchStringLiteral = do
   print $ parse parser "..." "thereisacow"
   print $ parse parser "..." "\"there is a cow + 1\""
 
+data JSONValue = B Bool 
+               | S String
+               deriving (Eq, Show)
+
+demoJavaScriptValue :: IO ()
+demoJavaScriptValue = do
+  -- note how it uses fmap to wrap the parser's return value
+  -- it is a common pattern in Parsec
+  -- the example in the video is nicer in that it separates 
+  -- the raw parsers that return Haskell's builtin types, from
+  -- json parsers that return the JSONValue 
+  -- jsonBool = fmap B boolParser
+  -- jsonString = fmap S stringParser
+  let str :: Parser JSONValue
+      str = S <$> ((char '"') *> (many (noneOf "\"")) <* (char '"'))
+      boo :: Parser JSONValue
+      boo = B <$> (((string "true") *> (pure True)) 
+            <|> ((string "false") *> (pure False)))
+      jv :: Parser JSONValue
+      jv = str <|> boo
+
+      -- borrowed from real world haskell book
+      despace :: Parser a -> Parser a
+      despace p = many (char ' ') *> p <* many (char ' ')
+
+      -- the arr definition is quite nice
+      arr = (despace (char '[')) *>
+            ((despace jv) `sepBy` (char ','))
+            <* (despace (char ']'))
+  
+  -- I  can use monadic notation (do notation) instead of *> <* !!
+  print $ parse jv "..." "true" 
+  print $ parse (despace jv) "..." "  \" there is a cow \"  "
+  print $ parse jv "..." "thereis"
+  print $ parse arr "..." "[\"there\", \"is\", true, \"cow\"]"
+  print $ parse arr "..." " [ \" there \" , \" is \" , true , \" cow \" ] "
+
 main :: IO ()
 main = do
-  demoMatchStringLiteral
+  demoJavaScriptValue
