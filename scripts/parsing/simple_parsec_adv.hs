@@ -1,5 +1,8 @@
 #!/usr/bin/env stack runghc
 
+-- source
+-- parse stuffs in haskell (meetup video)
+
 import Text.ParserCombinators.Parsec
 import Data.Char
 import Control.Applicative (some)
@@ -9,9 +12,12 @@ data JSONValue = B Bool
                | N Int
                deriving (Show, Eq)
 
+-- the example in the video uses: p <* despace approach
+-- meaning that he had to put "despace" in a few places in the 
+-- array parser
 despace :: Parser a -> Parser a
 despace p = 
-  many (char ' ') *> p <* many (char ' ')
+  many (oneOf " \t\n") *> p <* many (oneOf " \t\n")
 
 boolParser :: Parser Bool
 boolParser = 
@@ -73,9 +79,15 @@ demoFloat :: IO ()
 demoFloat = do
   print $ parse floatParser "..." "13.37"
 
+-- parseFromFile is a helper function exported by Parsec
+demoParseFromFile :: IO ()
+demoParseFromFile = do
+  result <- parseFromFile jsonArray "simple.json"
+  print result
+
 main :: IO ()
 main = do
   demoString
   demoNum
   demoFloat
-
+  demoParseFromFile
