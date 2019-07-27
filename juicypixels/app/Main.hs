@@ -13,7 +13,7 @@ instance Arbitrary PixelRGB8 where
 genImage :: Gen (Image PixelRGB8)
 genImage = do
   f <- arbitrary
-  (x, y) <- arbitrary `suchThat` ( \(x,y) -> x > 0 && y > 0 )
+  (x, y) <- arbitrary `suchThat` ( \(x,y) -> x + 10 > 0 && y > 0 )
   return $ generateImage f x y
 
 main :: IO ()
