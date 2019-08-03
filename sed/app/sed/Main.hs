@@ -63,7 +63,7 @@ runCommand Print =
 runCommand Next =
   Ms.modify $ \ss -> ss {
     line = line ss + 1
-  , input = Z.right (input ss)
+  , input = Z.delete (input ss)
   , patternSpace = Z.cursor (input ss)
   }
 runCommand Delete =
