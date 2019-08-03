@@ -54,10 +54,9 @@ runCommands cmds = do
 -- \\\\ this is even better \\\\
 runCommand :: Command -> Ms.State SedState ()
 runCommand Print =
-  Ms.modify $ \ss ->
-    -- ss is not seen in "where" block; I have to use let..in
-    let newOutput = T.lines (output ss) ++ T.lines (patternSpace ss)
-    in ss { output = T.unlines newOutput }
+  Ms.modify $ \ss -> ss { output = output ss <+> patternSpace ss }
+  -- ss is not seen in "where" block; I have to use let..in
+
 runCommand Next =
   Ms.modify $ \ss -> ss {
     line = line ss + 1
@@ -67,6 +66,12 @@ runCommand Delete =
   Ms.modify $ \ss -> ss {
     patternSpace = T.empty
   }
+
+-- the naive "unlines . lines" concatenation logic for T.Text
+-- is O(n^2); therefore I need to introduce a O(n) concat
+-- it also needs to account for the newline character
+(<+>) :: T.Text -> T.Text -> T.Text
+(<+>) t1 t2 = t1 `T.append` T.cons '\n' t2
 
 main :: IO ()
 -- Prelude interact accepts String -> String function, therefore
