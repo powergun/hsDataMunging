@@ -2,6 +2,8 @@ module Main where
 
 import qualified Control.Monad       as M
 import qualified Control.Monad.State as Ms
+-- what is zipper: https://wiki.haskell.org/Zipper
+import qualified Data.List.Zipper    as Z
 import qualified Data.Text           as T
 import qualified Data.Text.IO        as TIO
 
@@ -10,10 +12,9 @@ import qualified Data.Text.IO        as TIO
 
 data SedState = SedState {
   line         :: Int
-, input        :: T.Text
+, input        :: Z.Zipper T.Text
 , patternSpace :: T.Text
 , holdSpace    :: T.Text
-, output       :: T.Text
 } deriving (Show)
 
 data Command = Print
@@ -33,7 +34,9 @@ sed cmds t =
 
 defaultState :: T.Text -> SedState
 defaultState t =
-  SedState 1 t (head (T.lines t)) T.empty T.empty
+  SedState 1 z (Z.cursor z) (T.singleton '\n')
+  where
+    z = Z.fromList (T.lines t)
 
 runCommands :: [Command] -> Ms.State SedState T.Text
 -- because this function needs to "return T.Text" instead of
@@ -42,8 +45,8 @@ runCommands :: [Command] -> Ms.State SedState T.Text
 runCommands cmds = do
   M.mapM_ runCommand cmds
   ss <- Ms.get
-  if line ss == length (T.lines $ input ss)
-  then return (output ss)
+  if Z.endp $ input ss
+  then (return . T.unlines . Z.toList) (input ss)
   else runCommand Next >> runCommands cmds
 
 -- note that the video uses the bind command >>= so it has
@@ -54,13 +57,14 @@ runCommands cmds = do
 -- \\\\ this is even better \\\\
 runCommand :: Command -> Ms.State SedState ()
 runCommand Print =
-  Ms.modify $ \ss -> ss { output = output ss <+> patternSpace ss }
+  Ms.modify $ \ss -> ss { input = Z.push (patternSpace ss) (input ss) }
   -- ss is not seen in "where" block; I have to use let..in
 
 runCommand Next =
   Ms.modify $ \ss -> ss {
     line = line ss + 1
-  , patternSpace = T.lines (input ss) !! line ss
+  , input = Z.right (input ss)
+  , patternSpace = Z.cursor (input ss)
   }
 runCommand Delete =
   Ms.modify $ \ss -> ss {

@@ -23,21 +23,13 @@ dependencies:
 - base >= 4.7 && < 5
 - text
 - mtl
+- ListZipper
 
 library:
   source-dirs: src
 
 executables:
-  cat:
-    main:                Main.hs
-    source-dirs:         app/cat
-    ghc-options:
-    - -threaded
-    - -rtsopts
-    - -with-rtsopts=-N
-    dependencies:
-    - sed
-  sed:
+  hsed:
     main:                Main.hs
     source-dirs:         app/sed
     ghc-options:
