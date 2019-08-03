@@ -54,12 +54,18 @@ runCommands cmds = do
 -- \\\\ this is even better \\\\
 runCommand :: Command -> Ms.State SedState ()
 runCommand Print =
-  Ms.modify $ \ss -> ss { output = output ss `T.append` patternSpace ss }
-
+  Ms.modify $ \ss ->
+    -- ss is not seen in "where" block; I have to use let..in
+    let newOutput = T.lines (output ss) ++ T.lines (patternSpace ss)
+    in ss { output = T.unlines newOutput }
 runCommand Next =
   Ms.modify $ \ss -> ss {
     line = line ss + 1
   , patternSpace = T.lines (input ss) !! line ss
+  }
+runCommand Delete =
+  Ms.modify $ \ss -> ss {
+    patternSpace = T.empty
   }
 
 main :: IO ()
