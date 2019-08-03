@@ -34,7 +34,7 @@ sed cmds t =
 
 defaultState :: T.Text -> SedState
 defaultState t =
-  SedState 1 z (Z.cursor z) (T.singleton '\n')
+  SedState 1 (Z.delete z) (Z.cursor z) (T.singleton '\n')
   where
     z = Z.fromList (T.lines t)
 
@@ -66,10 +66,12 @@ runCommand Next =
   , input = Z.delete (input ss)
   , patternSpace = Z.cursor (input ss)
   }
+
 runCommand Delete =
-  Ms.modify $ \ss -> ss {
-    patternSpace = T.empty
-  }
+  Ms.modify $ \ss -> ss { patternSpace = T.empty }
+
+runCommand (Substitute pat sub flags) =
+  Ms.modify id
 
 -- the naive "unlines . lines" concatenation logic for T.Text
 -- is O(n^2); therefore I need to introduce a O(n) concat
