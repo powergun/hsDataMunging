@@ -59,7 +59,7 @@ runCommand Print =
 runCommand Next =
   Ms.modify $ \ss -> ss {
     line = line ss + 1
-  , patternSpace = (T.lines (input ss)) !! line ss
+  , patternSpace = T.lines (input ss) !! line ss
   }
 
 main :: IO ()
