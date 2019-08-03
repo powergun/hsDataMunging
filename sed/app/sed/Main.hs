@@ -6,6 +6,7 @@ import qualified Control.Monad.State as Ms
 import qualified Data.List.Zipper    as Z
 import qualified Data.Text           as T
 import qualified Data.Text.IO        as TIO
+import qualified Text.Regex          as Regex
 
 -- source
 -- sed implementation in haskell video
@@ -60,18 +61,22 @@ runCommand Print =
   Ms.modify $ \ss -> ss { input = Z.push (patternSpace ss) (input ss) }
   -- ss is not seen in "where" block; I have to use let..in
 
-runCommand Next =
-  Ms.modify $ \ss -> ss {
-    line = line ss + 1
-  , input = Z.delete (input ss)
-  , patternSpace = Z.cursor (input ss)
-  }
+runCommand Next = Ms.modify $ \ss ->
+  ss { line = line ss + 1
+     , input = Z.delete (input ss)
+     , patternSpace = Z.cursor (input ss) }
 
-runCommand Delete =
-  Ms.modify $ \ss -> ss { patternSpace = T.empty }
+runCommand Delete = Ms.modify $ \ss -> ss { patternSpace = T.empty }
 
-runCommand (Substitute pat sub flags) =
-  Ms.modify id
+runCommand (Substitute pat sub flags) = Ms.modify $ \ss ->
+  -- replacement string takes \\0, \\1, \\2 that refer to the capture
+  -- perl deals with this in a similar way
+  -- perl -n -E 's/(\d+).(\d+)/\1--\2/g and say' <<<"234.123 3241.213123"
+  -- 234--123 3241--213123
+  let newText = T.pack (Regex.subRegex regex src sub)
+      regex = Regex.mkRegex pat
+      src = T.unpack (patternSpace ss)
+  in ss { patternSpace = newText }
 
 -- the naive "unlines . lines" concatenation logic for T.Text
 -- is O(n^2); therefore I need to introduce a O(n) concat
@@ -82,4 +87,7 @@ runCommand (Substitute pat sub flags) =
 main :: IO ()
 -- Prelude interact accepts String -> String function, therefore
 -- I need to use the TIO version of interact
-main = TIO.interact $ sed [Print]
+-- test case:
+-- Substitute "[0-9]+" "classified(\\0)"
+-- py -c "[print('there is %d some' % id(n)) for n in range(10)]" | hsed
+main = TIO.interact $ sed [Substitute "[0-9]+" "classified(\\0)" "", Print]

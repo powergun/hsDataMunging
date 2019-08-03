@@ -24,6 +24,7 @@ dependencies:
 - text
 - mtl
 - ListZipper
+- regex-compat
 
 library:
   source-dirs: src
