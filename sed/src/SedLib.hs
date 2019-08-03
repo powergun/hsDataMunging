@@ -29,11 +29,16 @@ data Command = Print
 -- reason for using Text type: Text allows utf-8 encoding, whereas
 -- String is ascii
 -- wrapping the monadial function! use evalState to pull the result
-sed :: [Command] -> T.Text -> T.Text
-sed cmds t =
+sed :: String -> T.Text -> T.Text
+sed s t =
+  let cmds = parseSed s
   -- note: I can not use t as the default SedState! it must be
   -- constructed; see the definition of defaultState function
-  Ms.evalState (runCommands cmds) (defaultState t)
+  in Ms.evalState (runCommands cmds) (defaultState t)
+
+parseSed :: String -> [Command]
+parseSed s =
+  [Substitute "[0-9]+" "classified(\\0)" "", Print]
 
 defaultState :: T.Text -> SedState
 defaultState t =
