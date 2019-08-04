@@ -10,6 +10,9 @@ import qualified Data.Text           as T
 import qualified Data.Text.IO        as TIO
 import qualified Text.Regex          as Regex
 
+import           Command
+import           Parser
+
 -- source
 -- sed implementation in haskell video
 
@@ -20,12 +23,6 @@ data SedState = SedState {
 , holdSpace    :: T.Text
 } deriving (Show)
 
-data Command = Print
-             | Next
-             | Delete
-             | Substitute String String String
-             deriving (Show)
-
 -- reason for using Text type: Text allows utf-8 encoding, whereas
 -- String is ascii
 -- wrapping the monadial function! use evalState to pull the result
@@ -35,10 +32,6 @@ sed s t =
   -- note: I can not use t as the default SedState! it must be
   -- constructed; see the definition of defaultState function
   in Ms.evalState (runCommands cmds) (defaultState t)
-
-parseSed :: String -> [Command]
-parseSed s =
-  [Substitute "[0-9]+" "classified(\\0)" "", Print]
 
 defaultState :: T.Text -> SedState
 defaultState t =

@@ -25,6 +25,7 @@ dependencies:
 - mtl
 - ListZipper
 - regex-compat
+- parsec
 
 library:
   source-dirs: src
