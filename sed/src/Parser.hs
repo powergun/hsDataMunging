@@ -16,7 +16,7 @@ parseSed s =
 
 parseCommands :: Parser [Command]
 parseCommands =
-  sepEndBy parseCommand (char ';')
+  sepEndBy parseCommand (char ';' <|> newline)
 
 parseCommand :: Parser Command
 parseCommand = do

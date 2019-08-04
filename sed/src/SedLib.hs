@@ -26,12 +26,12 @@ data SedState = SedState {
 -- reason for using Text type: Text allows utf-8 encoding, whereas
 -- String is ascii
 -- wrapping the monadial function! use evalState to pull the result
-sed :: String -> T.Text -> T.Text
-sed s t =
+sed :: String -> Bool -> T.Text -> T.Text
+sed s n t =
   let cmds = parseSed s
   -- note: I can not use t as the default SedState! it must be
   -- constructed; see the definition of defaultState function
-  in Ms.evalState (runCommands cmds) (defaultState t)
+  in Ms.evalState (runCommands cmds n) (defaultState t)
 
 defaultState :: T.Text -> SedState
 defaultState t =
@@ -39,16 +39,17 @@ defaultState t =
   where
     z = Z.fromList (T.lines t)
 
-runCommands :: [Command] -> Ms.State SedState T.Text
+runCommands :: [Command] -> Bool -> Ms.State SedState T.Text
 -- because this function needs to "return T.Text" instead of
 -- Ms.State (the type returned by "calling return()"), I need
 -- an accessor here, and compose it with return
-runCommands cmds = do
+runCommands cmds quiet = do
   M.mapM_ runCommand cmds
+  M.unless quiet (runCommand Print)
   ss <- Ms.get
   if Z.endp $ zipper ss
   then (return . T.unlines . Z.toList) (zipper ss)
-  else runCommand Next >> runCommands cmds
+  else runCommand Next >> runCommands cmds quiet
 
 -- note that the video uses the bind command >>= so it has
 -- to define a new lambda function for each new action
