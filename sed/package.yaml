@@ -42,7 +42,7 @@ executables:
     - sed
 tests:
   sed-test:
-    main:                Spec.hs
+    main:                TestMain.hs
     source-dirs:         test
     ghc-options:
     - -threaded
@@ -50,3 +50,7 @@ tests:
     - -with-rtsopts=-N
     dependencies:
     - sed
+    - test-framework
+    - test-framework-hunit
+    - HUnit
+    - process

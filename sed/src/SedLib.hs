@@ -1,6 +1,4 @@
-module SedLib
-  ( Command(..)
-  , sed ) where
+module SedLib (sed) where
 
 import qualified Control.Monad       as M
 import qualified Control.Monad.State as Ms

@@ -3,7 +3,7 @@ module Main where
 import           Control.Monad         (when)
 import           Data.List
 import qualified Data.Text.IO          as TIO
-import           SedLib                (Command (..), sed)
+import           SedLib
 import           System.Console.GetOpt
 import           System.Environment    (getArgs)
 import           System.Exit           (exitFailure, exitSuccess)
