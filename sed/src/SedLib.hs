@@ -3,13 +3,13 @@ module SedLib (sed) where
 import qualified Control.Monad       as M
 import qualified Control.Monad.State as Ms
 -- what is zipper: https://wiki.haskell.org/Zipper
+import           Command
 import qualified Data.List.Zipper    as Z
 import qualified Data.Text           as T
 import qualified Data.Text.IO        as TIO
-import qualified Text.Regex          as Regex
-
-import           Command
+import           Debug.Trace
 import           Parser
+import qualified Text.Regex          as Regex
 
 -- source
 -- sed implementation in haskell video
@@ -63,7 +63,10 @@ runCommand Print =
 runCommand Next = Ms.modify $ \ss ->
   ss { line = line ss + 1
      , zipper = Z.delete (zipper ss)
-     , patternSpace = Z.cursor (zipper ss) }
+     , patternSpace = if Z.endp (zipper ss)
+                      then T.empty
+                      else Z.cursor (zipper ss)
+     }
 
 runCommand Delete = Ms.modify $ \ss -> ss { patternSpace = T.empty }
 

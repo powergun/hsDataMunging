@@ -17,5 +17,9 @@ sedCase txt cs = do
 main :: IO ()
 main = do
   testPrintOnlyQuiet <- sedCase "there\nis a\ncow" "p"
+  testPrintAndNextQuiet <- sedCase "there\nis a\ncow" "p;n"
+  testNextAndPrintQuiet <- sedCase "there\nis a\ncow" "n;n;p"
   defaultMain [ testPrintOnlyQuiet
+              , testPrintAndNextQuiet
+              , testNextAndPrintQuiet
               ]
