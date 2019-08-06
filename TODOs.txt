@@ -4,3 +4,10 @@ https://github.com/snoyberg/conduit
 
 parsing
 https://github.com/lettier/parsing-with-haskell-parser-combinators
+
+parsing shell scripts
+https://www.oilshell.org/blog/2019/02/07.html
+
+pandoc: haskell
+(deconstruct video)
+
