@@ -1,5 +1,6 @@
 -- notes extracted from cis194 week2 homework
 -- subject is a log message parser
+-- source: https://github.com/fp-works/2019-winter-Haskell-school/pull/16
 
 {-
 # simple case
@@ -27,3 +28,6 @@ Struct <$> parser1 <*> parser2 <*> ... <*> parserN
 where Struct (the value ctor) takes the output from parser1 ... N
 -}
 
+{-
+Prefer pure to return
+-}
