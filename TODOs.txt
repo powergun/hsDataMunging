@@ -1,4 +1,11 @@
 
+JSON JSON JSON
+
+I made a failed attempt to replace my vsws utility written in ruby
+in hsSrcMining
+
+need to look into adv. aeson articles
+
 stream
 https://github.com/snoyberg/conduit
 
