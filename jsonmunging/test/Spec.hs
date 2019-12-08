@@ -1,2 +1,7 @@
+import qualified StandardTypes.List
+import qualified StandardTypes.Scalar
+
 main :: IO ()
-main = putStrLn "Test suite not yet implemented"
+main = do
+  StandardTypes.Scalar.demo
+  StandardTypes.List.demo
