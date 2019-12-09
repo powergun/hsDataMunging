@@ -21,6 +21,14 @@ as raw map `fromList`
 
 this is similar to python/ruby's decode-as-dictionary
 
+### JSON AST
+
+> Once you have a JSON value, you can define a Parser like we did
+> in parseJSON above, and run it using parse, parseEither or parseMaybe.
+> Decoding JSON to a specific Haskell type is actually a two-step
+> process - first, the JSON string is converted to a Value, and then
+> the FromJSON instance is used to convert that Value to the specific type.
+
 ## Decode & Encode Defined Data Types
 
 see minimal example: [./src/DataTypes/Person.hs](./src/DataTypes/Person.hs)
