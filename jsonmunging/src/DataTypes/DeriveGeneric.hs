@@ -1,7 +1,7 @@
 {-# LANGUAGE DeriveGeneric     #-}
 {-# LANGUAGE OverloadedStrings #-}
 
-module DataTypes.Person (demo) where
+module DataTypes.DeriveGeneric (demo) where
 
 import           Data.Aeson
 import           Data.Text

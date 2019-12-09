@@ -3,7 +3,8 @@ import qualified StandardTypes.Scalar
 
 import qualified AnyTypes.Value
 
-import qualified DataTypes.Person
+import qualified DataTypes.DeriveGeneric
+import qualified DataTypes.EncodeDecode
 
 main :: IO ()
 main = do
@@ -11,4 +12,6 @@ main = do
   StandardTypes.List.demo
 
   AnyTypes.Value.demo
-  DataTypes.Person.demo
+
+  DataTypes.DeriveGeneric.demo
+  DataTypes.EncodeDecode.demo
