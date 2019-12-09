@@ -46,4 +46,12 @@ to implement the decode and encode function myself, see minimal example:
 
 see: [./src/DataTypes/Value.hs](./src/DataTypes/Value.hs)
 
+source: <https://hackernoon.com/flexible-data-with-aeson-d8a23ba2169e>
+
+to traverse the json AST I may need additional libraries (lens-aeson)
+
 inspired by <https://stackoverflow.com/questions/28629290/how-to-inspect-parsed-aeson-value>
+
+aeson official document provides a simple example of decomposing the
+"fromList" representation of a JSON value:
+<https://hackage.haskell.org/package/aeson-1.4.6.0/docs/Data-Aeson.html#g:20>

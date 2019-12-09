@@ -5,6 +5,7 @@ import qualified AnyTypes.Value
 
 import qualified DataTypes.DeriveGeneric
 import qualified DataTypes.EncodeDecode
+import qualified DataTypes.SimpleDecompose
 import qualified DataTypes.Value
 
 main :: IO ()
@@ -17,3 +18,5 @@ main = do
   DataTypes.DeriveGeneric.demo
   DataTypes.EncodeDecode.demo
   DataTypes.Value.demo
+  DataTypes.SimpleDecompose.demo
+
