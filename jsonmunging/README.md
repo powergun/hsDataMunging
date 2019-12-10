@@ -69,3 +69,7 @@ care of rest of the data representation but use their JSON representation as
 they are; see `hsSrcMing/vsws` for a tool to sort the visual studio
 code workspace file (without touching the whole workspace-setting
 sub section)
+
+NOTE: (I was stuck on this for a while) the type of the un-parsed
+sub section must be `Value` (`Object` is the value ctor not the data
+type!!)
