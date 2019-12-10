@@ -55,3 +55,17 @@ inspired by <https://stackoverflow.com/questions/28629290/how-to-inspect-parsed-
 aeson official document provides a simple example of decomposing the
 "fromList" representation of a JSON value:
 <https://hackage.haskell.org/package/aeson-1.4.6.0/docs/Data-Aeson.html#g:20>
+
+### Use JSON Value without parsing (for a sub-section)
+
+see: [./src/DataTypes/SimpleDecompose.hs](./src/DataTypes/SimpleDecompose.hs)
+
+this example shows how to partially parse (or un-parse) a sub-structure
+of the given json document;
+
+this can be useful in the cases where I need to modify a sub-section
+(such as sort the content) but preserve the rest - this means I don't
+care of rest of the data representation but use their JSON representation as
+they are; see `hsSrcMing/vsws` for a tool to sort the visual studio
+code workspace file (without touching the whole workspace-setting
+sub section)
