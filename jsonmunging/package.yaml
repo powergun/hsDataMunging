@@ -28,6 +28,7 @@ dependencies:
   - mtl
   - containers
   - optparse-applicative
+  - unordered-containers
 
 library:
   source-dirs: src
