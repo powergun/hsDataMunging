@@ -73,3 +73,8 @@ sub section)
 NOTE: (I was stuck on this for a while) the type of the un-parsed
 sub section must be `Value` (`Object` is the value ctor not the data
 type!!)
+
+## Exception | Handle parsing failures
+
+`eitherDecode` function returns the detail of the failure - type
+incompatibity etc.

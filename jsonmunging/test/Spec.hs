@@ -8,6 +8,8 @@ import qualified DataTypes.EncodeDecode
 import qualified DataTypes.SimpleDecompose
 import qualified DataTypes.Value
 
+import qualified Exceptions.EitherParse
+
 main :: IO ()
 main = do
   StandardTypes.Scalar.demo
@@ -19,4 +21,6 @@ main = do
   DataTypes.EncodeDecode.demo
   DataTypes.Value.demo
   DataTypes.SimpleDecompose.demo
+
+  Exceptions.EitherParse.demo
 
