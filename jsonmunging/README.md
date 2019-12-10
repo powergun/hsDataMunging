@@ -29,6 +29,19 @@ this is similar to python/ruby's decode-as-dictionary
 > process - first, the JSON string is converted to a Value, and then
 > the FromJSON instance is used to convert that Value to the specific type.
 
+### Create JSON AST in Haskell
+
+see [./src/AnyTypes/JSONTypes.hs](./src/AnyTypes/JSONTypes.hs)
+
+source: <https://artyom.me/aeson>
+
+This can be useful for quick prototyping without defining the
+concrete Haskell data type
+
+### How to traverse JSON AST (and edit every string)
+
+source: <https://artyom.me/aeson>
+
 ## Decode & Encode Defined Data Types
 
 see minimal example: [./src/DataTypes/DeriveGeneric.hs](./src/DataTypes/DeriveGeneric.hs)

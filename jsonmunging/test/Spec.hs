@@ -1,6 +1,7 @@
 import qualified StandardTypes.List
 import qualified StandardTypes.Scalar
 
+import qualified AnyTypes.JSONTypes
 import qualified AnyTypes.Value
 
 import qualified DataTypes.DeriveGeneric
@@ -16,6 +17,7 @@ main = do
   StandardTypes.List.demo
 
   AnyTypes.Value.demo
+  AnyTypes.JSONTypes.demo
 
   DataTypes.DeriveGeneric.demo
   DataTypes.EncodeDecode.demo
