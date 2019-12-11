@@ -42,6 +42,9 @@ concrete Haskell data type
 
 source: <https://artyom.me/aeson>
 
+An Object is a HashMap; an Array is a Vector; a String is a Text;
+a Number is Scientific;
+
 ## Decode & Encode Defined Data Types
 
 see minimal example: [./src/DataTypes/DeriveGeneric.hs](./src/DataTypes/DeriveGeneric.hs)
