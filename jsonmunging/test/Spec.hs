@@ -2,6 +2,7 @@ import qualified StandardTypes.List
 import qualified StandardTypes.Scalar
 
 import qualified AnyTypes.JSONTypes
+import qualified AnyTypes.KeyVisitor
 import qualified AnyTypes.StringVisitor
 import qualified AnyTypes.Value
 
@@ -20,6 +21,7 @@ main = do
   AnyTypes.Value.demo
   AnyTypes.JSONTypes.demo
   AnyTypes.StringVisitor.demo
+  AnyTypes.KeyVisitor.demo
 
   DataTypes.DeriveGeneric.demo
   DataTypes.EncodeDecode.demo

@@ -40,10 +40,18 @@ concrete Haskell data type
 
 ### How to traverse JSON AST (and edit every string)
 
+see: [./src/AnyTypes/StringVisitor.hs](./src/AnyTypes/StringVisitor.hs)
+
 source: <https://artyom.me/aeson>
 
 An Object is a HashMap; an Array is a Vector; a String is a Text;
 a Number is Scientific;
+
+I took a step further from the example and created KeyVisitor example:
+[./src/AnyTypes/KeyVisitor.hs](./src/AnyTypes/KeyVisitor.hs);
+
+this shows how to selectively action on the `Object` using a predicate
+function
 
 ## Decode & Encode Defined Data Types
 
