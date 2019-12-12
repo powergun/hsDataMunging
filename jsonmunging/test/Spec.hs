@@ -13,6 +13,10 @@ import qualified DataTypes.Value
 
 import qualified Exceptions.EitherParse
 
+import qualified Parsing.Applicative
+import qualified Parsing.FromScratch
+import qualified Parsing.WithParsing
+
 main :: IO ()
 main = do
   StandardTypes.Scalar.demo
@@ -30,3 +34,6 @@ main = do
 
   Exceptions.EitherParse.demo
 
+  Parsing.FromScratch.demo
+  Parsing.WithParsing.demo
+  Parsing.Applicative.demo

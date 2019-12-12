@@ -38,7 +38,7 @@ source: <https://artyom.me/aeson>
 This can be useful for quick prototyping without defining the
 concrete Haskell data type
 
-### How to traverse JSON AST (and edit every string)
+### How to traverse JSON AST - string visitor and key visitor
 
 see: [./src/AnyTypes/StringVisitor.hs](./src/AnyTypes/StringVisitor.hs)
 
@@ -80,12 +80,18 @@ aeson official document provides a simple example of decomposing the
 "fromList" representation of a JSON value:
 <https://hackage.haskell.org/package/aeson-1.4.6.0/docs/Data-Aeson.html#g:20>
 
-### Use JSON Value without parsing (for a sub-section)
+### Use JSON Value as-is without parsing (for a sub-section)
 
 see: [./src/DataTypes/SimpleDecompose.hs](./src/DataTypes/SimpleDecompose.hs)
 
 this example shows how to partially parse (or un-parse) a sub-structure
-of the given json document;
+of the given json document by giving a field `Value (Aeson.Value)` type;
+
+after decoding stage, such field is represented by `HM.fromList` or
+other `Aeson.Value` data constructors; I can encode them back to the
+ByteString if the intention is to leave them alone; if such field is
+optional in the source Json document I need to use `Data.Maybe.fromMaybe`
+to give it a default empty value (but NOT `Nothing`) during decoding.
 
 this can be useful in the cases where I need to modify a sub-section
 (such as sort the content) but preserve the rest - this means I don't
@@ -102,3 +108,18 @@ type!!)
 
 `eitherDecode` function returns the detail of the failure - type
 incompatibity etc.
+
+## Parsing
+
+source: <https://artyom.me/aeson>
+
+> A parser is something that turns a JSON value into something else
+> that you need (record, list of tuples, etc).
+
+### FromScratch - the inner working of parsing
+
+see: [./src/Parsing/FromScratch.hs](./src/Parsing/FromScratch.hs)
+
+use `parseMaybe` to apply a parser to a value
+
+### with- parsring: avoid manual type check

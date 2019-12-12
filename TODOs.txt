@@ -1,20 +1,7 @@
 
-JSON JSON JSON
-
-I made a failed attempt to replace my vsws utility written in ruby
-in hsSrcMining
-
-need to look into adv. aeson articles
+byte-str-text
+bread and butter, how can I miss it????
 
 stream
 https://github.com/snoyberg/conduit
-
-parsing
-https://github.com/lettier/parsing-with-haskell-parser-combinators
-
-parsing shell scripts
-https://www.oilshell.org/blog/2019/02/07.html
-
-pandoc: haskell
-(deconstruct video)
 
