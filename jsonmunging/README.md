@@ -133,3 +133,12 @@ see: [./src/Parsing/FromScratch.hs](./src/Parsing/FromScratch.hs)
 use `parseMaybe` to apply a parser to a value
 
 ### with- parsring: avoid manual type check
+
+### alternative- parsing: try with a different key
+
+see [./src/Parsing/Alternative.hs](./src/Parsing/Alternative.hs)
+
+using `Control.Applicative.(<|>)`
+
+> You could choose from a list of parsers, even, with the asum function
+> from Data.Foldable (which is generalised choice from various parsing libraries)
