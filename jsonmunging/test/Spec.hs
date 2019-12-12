@@ -14,6 +14,7 @@ import qualified DataTypes.Value
 
 import qualified Exceptions.EitherParse
 
+import qualified Parsing.Alternative
 import qualified Parsing.Applicative
 import qualified Parsing.FromScratch
 import qualified Parsing.WithParsing
@@ -39,3 +40,4 @@ main = do
   Parsing.FromScratch.demo
   Parsing.WithParsing.demo
   Parsing.Applicative.demo
+  Parsing.Alternative.demo
