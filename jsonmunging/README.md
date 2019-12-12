@@ -66,6 +66,16 @@ bash script ast
 to implement the decode and encode function myself, see minimal example:
 [./src/DataTypes/EncodeDecode.hs](./src/DataTypes/EncodeDecode.hs)
 
+### how to treat optional fields
+
+see: [./src/DataTypes/OptionalFields.hs](./src/DataTypes/OptionalFields.hs)
+
+see also below for how to use Aeson's Value type as the field type,
+which allows me to unparse a sub-section of the JSON document;
+
+optional field must have a default value which is handled by special
+operators
+
 ## Decode & Encode to Aeson Value | How to inspect Aeson Value
 
 see: [./src/DataTypes/Value.hs](./src/DataTypes/Value.hs)

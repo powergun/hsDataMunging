@@ -8,6 +8,7 @@ import qualified AnyTypes.Value
 
 import qualified DataTypes.DeriveGeneric
 import qualified DataTypes.EncodeDecode
+import qualified DataTypes.OptionalFields
 import qualified DataTypes.SimpleDecompose
 import qualified DataTypes.Value
 
@@ -31,6 +32,7 @@ main = do
   DataTypes.EncodeDecode.demo
   DataTypes.Value.demo
   DataTypes.SimpleDecompose.demo
+  DataTypes.OptionalFields.demo
 
   Exceptions.EitherParse.demo
 
