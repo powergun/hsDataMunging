@@ -53,6 +53,24 @@ I took a step further from the example and created KeyVisitor example:
 this shows how to selectively action on the `Object` using a predicate
 function
 
+### How to process arbitrarily named fields
+
+see: [./src/AnyTypes/UnnamedFields.hs](./src/AnyTypes/UnnamedFields.hs)
+
+source: <https://artyom.me/aeson>
+
+if the structure stores the arbitrarily named fields as key-value pair,
+such as:
+
+```text
+motion: .../amc
+puppet: .../asf
+model: .../obj
+texture: .../tiff
+```
+
+I can utilize the HashMap-to-list builtin mechanism
+
 ## Decode & Encode Defined Data Types
 
 see minimal example: [./src/DataTypes/DeriveGeneric.hs](./src/DataTypes/DeriveGeneric.hs)

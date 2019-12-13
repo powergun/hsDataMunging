@@ -1,7 +1,7 @@
-{-# LANGUAGE DeriveGeneric     #-}
+{-# LANGUAGE DeriveGeneric, DeriveAnyClass     #-}
 {-# LANGUAGE OverloadedStrings #-}
 
-module DataTypes.DeriveGeneric
+module DataTypes.DeriveGenericSimpler
   ( demo
   )
 where
@@ -13,10 +13,7 @@ import           GHC.Generics
 data Person = Person
   { name :: Text
   , age  :: Int
-  } deriving (Generic, Show)
-
-instance FromJSON Person
-instance ToJSON Person
+  } deriving (Generic, ToJSON, FromJSON, Show)
 
 demo :: IO ()
 demo = do

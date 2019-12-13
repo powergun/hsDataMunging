@@ -5,8 +5,10 @@ import qualified AnyTypes.JSONTypes
 import qualified AnyTypes.KeyVisitor
 import qualified AnyTypes.StringVisitor
 import qualified AnyTypes.Value
+import qualified AnyTypes.UnnamedFields
 
 import qualified DataTypes.DeriveGeneric
+import qualified DataTypes.DeriveGenericSimpler
 import qualified DataTypes.EncodeDecode
 import qualified DataTypes.OptionalFields
 import qualified DataTypes.SimpleDecompose
@@ -28,8 +30,10 @@ main = do
   AnyTypes.JSONTypes.demo
   AnyTypes.StringVisitor.demo
   AnyTypes.KeyVisitor.demo
+  AnyTypes.UnnamedFields.demo
 
   DataTypes.DeriveGeneric.demo
+  DataTypes.DeriveGenericSimpler.demo
   DataTypes.EncodeDecode.demo
   DataTypes.Value.demo
   DataTypes.SimpleDecompose.demo
