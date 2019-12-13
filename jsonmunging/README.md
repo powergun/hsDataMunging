@@ -142,3 +142,14 @@ using `Control.Applicative.(<|>)`
 
 > You could choose from a list of parsers, even, with the asum function
 > from Data.Foldable (which is generalised choice from various parsing libraries)
+
+I can test various types of conditions and decide whether to "fall back"
+to a different parsing strategy.
+
+I can also implement a parser that supports multiple data-ctors (via
+asum-based fallback mechanism)
+
+```haskell
+data Weapon = M16 { damage :: Int, attachment :: String}
+            | M9 { damage :: Int }
+```

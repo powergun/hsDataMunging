@@ -1,0 +1,9 @@
+{
+  "website1.com": {
+    "/page1": 3,
+    "/page2": 4
+  },
+  "website2.com": {
+    "/page": 10
+  }
+}
