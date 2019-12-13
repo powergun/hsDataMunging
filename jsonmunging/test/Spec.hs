@@ -9,8 +9,10 @@ import qualified AnyTypes.UnnamedFields
 
 import qualified DataTypes.DeriveGeneric
 import qualified DataTypes.DeriveGenericSimpler
+import qualified DataTypes.DeriveGenericTH
 import qualified DataTypes.EncodeDecode
 import qualified DataTypes.OptionalFields
+import qualified DataTypes.OptionalFieldsDeriving
 import qualified DataTypes.SimpleDecompose
 import qualified DataTypes.Value
 
@@ -34,10 +36,12 @@ main = do
 
   DataTypes.DeriveGeneric.demo
   DataTypes.DeriveGenericSimpler.demo
+  DataTypes.DeriveGenericTH.demo
   DataTypes.EncodeDecode.demo
   DataTypes.Value.demo
   DataTypes.SimpleDecompose.demo
   DataTypes.OptionalFields.demo
+  DataTypes.OptionalFieldsDeriving.demo
 
   Exceptions.EitherParse.demo
 
