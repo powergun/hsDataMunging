@@ -1,5 +1,5 @@
-import qualified Lib
+import qualified Streamly_.Demo
 
 main :: IO ()
 main = do
-  Lib.demo
+  Streamly_.Demo.demo
