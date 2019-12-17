@@ -42,7 +42,15 @@ executables:
       - -with-rtsopts=-N
     dependencies:
       - streamdata
-
+  pipeline:
+    main: Main.hs
+    source-dirs: app/pipeline
+    ghc-options:
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
+    dependencies:
+      - streamdata
 tests:
   streamdata-test:
     main: Spec.hs
