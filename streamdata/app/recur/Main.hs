@@ -1,6 +1,6 @@
 module Main where
 
-import qualified Streamly_.RecurReadFiles
+import qualified Streamly_.RecurLineCount
 
 main :: IO ()
-main = Streamly_.RecurReadFiles.demo
+main = Streamly_.RecurLineCount.demo
