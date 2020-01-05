@@ -12,4 +12,4 @@ source: <http://etorreborre.blogspot.com/2019/09/processing-csv-files-in-haskell
 
 see: src/Cassava/Demo.hs; source: <https://hackage.haskell.org/package/cassava-0.5.2.0>
 
-mentioned in First Principles to demo Applicative parsing
+mentioned in First Principles P/810, to demo Applicative parsing
