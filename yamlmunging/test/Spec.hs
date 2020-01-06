@@ -1,2 +1,7 @@
+import qualified ConfigDemo
+import qualified SimpleDemo
+
 main :: IO ()
-main = putStrLn "Test suite not yet implemented"
+main = do
+  SimpleDemo.demo
+  ConfigDemo.demo
