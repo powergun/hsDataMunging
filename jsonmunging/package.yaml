@@ -30,6 +30,7 @@ dependencies:
   - optparse-applicative
   - unordered-containers
   - vector
+  - raw-strings-qq
 
 library:
   source-dirs: src

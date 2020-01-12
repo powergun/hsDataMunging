@@ -171,3 +171,8 @@ asum-based fallback mechanism)
 data Weapon = M16 { damage :: Int, attachment :: String}
             | M9 { damage :: Int }
 ```
+
+## Rediscover Aeson and Parsing, First Principles P/968
+
+it shows the use of QuasiQuote, very helpful, see:
+src/AnyTypes/StringVisitor.hs
